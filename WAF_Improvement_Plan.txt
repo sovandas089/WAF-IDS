@@ -1,0 +1,81 @@
+WAF PROJECT IMPROVEMENT PLAN
+
+1.  Convert to a True WAF (Most Important)
+
+-   Current system analyzes packets, not actual HTTP requests.
+-   Implement a reverse proxy using FastAPI.
+-   Inspect requests before forwarding to backend.
+-   Block malicious payloads in real-time.
+
+2.  Improve Rule Engine
+
+-   Move beyond simple regex matching.
+-   Implement scoring-based detection:
+    -   SQL keywords → +5
+    -   XSS patterns → +5
+    -   High request rate → +10
+-   Block when threshold exceeded.
+
+3.  Handle HTTPS Traffic Limitation
+
+-   Scapy cannot inspect encrypted traffic.
+-   Use mitmproxy (for testing) OR analyze web server logs.
+-   Consider integrating with Nginx/Apache logs.
+
+4.  Enhance Blocking System
+
+-   Add temporary blocking (e.g., 10 minutes).
+-   Maintain blocked IP history.
+-   Implement automatic unblocking.
+
+5.  Upgrade Dashboard
+
+-   Add charts:
+    -   Attack types (pie chart)
+    -   Top attacking IPs
+    -   Traffic timeline
+-   Make UI similar to SIEM tools like Splunk.
+
+6.  Add Logging System
+
+-   Store logs in files or database.
+-   Log:
+    -   Attacks
+    -   Blocked IPs
+    -   Traffic summaries
+
+7.  Add Alerting Mechanism
+
+-   Email alerts for critical attacks.
+-   Optional: Slack/Discord webhook integration.
+
+8.  Threat Intelligence Integration
+
+-   Use APIs:
+    -   AbuseIPDB
+    -   VirusTotal
+-   Enrich attacker IP data.
+
+9.  Dockerize the Project
+
+-   Create Dockerfile and docker-compose.yml
+-   Make project easy to run with one command.
+
+10. Improve Architecture
+
+-   Separate:
+    -   WAF proxy
+    -   Packet sniffer
+    -   Analyzer
+    -   Dashboard
+-   Make system modular and scalable.
+
+11. Add Testing
+
+-   Simulate:
+    -   SQL injection attacks
+    -   Brute-force attacks
+-   Ensure detection and blocking works.
+
+FINAL GOAL: Transform project from basic IDS/WAF into a production-style
+security system suitable for SOC Analyst portfolio.

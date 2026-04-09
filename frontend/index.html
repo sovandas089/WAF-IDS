@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WAF & IDS Dashboard</title>
+    <link rel="stylesheet" href="/dashboard/css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+
+    <nav class="navbar">
+        <div class="logo">
+            <i class="fa-solid fa-shield-halved"></i>
+            WAF<span>Guardian</span>
+        </div>
+        <div class="nav-links">
+            <a href="#" id="link-dashboard" class="active"><i class="fa-solid fa-chart-line"></i> Dashboard</a>
+            <a href="#pcap-upload-section" id="link-pcap"><i class="fa-solid fa-file-shield"></i> PCAP Analysis</a>
+            <a href="#" id="link-rules"><i class="fa-solid fa-sliders"></i> Rules</a>
+        </div>
+    </nav>
+
+    <!-- Rules Modal -->
+    <div id="rules-modal" class="modal" style="display:none;">
+        <div class="modal-content">
+            <span class="close-btn">&times;</span>
+            <h2>Active WAF Rules</h2>
+            <pre id="rules-content" style="background:#0b0f19; padding: 15px; border-radius: 8px; color:#10b981; overflow-x: auto;">Loading...</pre>
+        </div>
+    </div>
+
+    <main class="dashboard" id="main-dashboard">
+        <div class="header-section">
+            <h1>System Dashboard</h1>
+            <p>Real-time monitor of network traffic and intrusion detection.</p>
+        </div>
+
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-icon threat"><i class="fa-solid fa-triangle-exclamation"></i></div>
+                <div class="stat-info">
+                    <h3>Alerts Count</h3>
+                    <h2 id="total-alerts">0</h2>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon blocked"><i class="fa-solid fa-ban"></i></div>
+                <div class="stat-info">
+                    <h3>Blocked IPs</h3>
+                    <h2 id="total-blocked">0</h2>
+                </div>
+            </div>
+            <div class="stat-card upload-section" id="pcap-upload-section">
+                <h3>Upload PCAP for Analysis</h3>
+                <input type="file" id="pcap-upload" accept=".pcap,.pcapng" />
+                <button id="upload-btn" class="btn-primary">Analyze PCAP</button>
+            </div>
+        </div>
+
+        <div class="panels">
+            <div class="panel live-feed">
+                <h2><i class="fa-solid fa-satellite-dish"></i> Live Alerts Feed</h2>
+                <div class="feed-container" id="alerts-feed">
+                    <!-- Alerts will load here -->
+                    <div class="placeholder-msg">Listening for alerts...</div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <main class="dashboard" id="pcap-dashboard" style="display:none;">
+        <div class="header-section" style="display:flex; justify-content:space-between; align-items:center;">
+            <div>
+                <h1>PCAP Offline Analysis</h1>
+                <p>Historical logs extracted from uploaded capture file.</p>
+            </div>
+            <button id="back-to-main-btn" class="btn-primary">Back to Live Dashboard</button>
+        </div>
+        
+        <div class="panel" style="overflow-x: auto; max-height: 75vh; overflow-y: auto;">
+            <table style="width: 100%; border-collapse: collapse; text-align: left; min-width: 800px;">
+                <thead style="position: sticky; top: 0; z-index: 10;">
+                    <tr style="border-bottom: 1px solid var(--border); background-color: var(--bg-main);">
+                        <th style="padding: 1rem;">Timestamp</th>
+                        <th style="padding: 1rem;">Source IP</th>
+                        <th style="padding: 1rem;">Target Path</th>
+                        <th style="padding: 1rem;">Threat Reason</th>
+                        <th style="padding: 1rem;">Severity</th>
+                    </tr>
+                </thead>
+                <tbody id="pcap-logs-table">
+                    <!-- Dynamic logs here -->
+                </tbody>
+            </table>
+        </div>
+    </main>
+
+    <script src="/dashboard/js/main.js"></script>
+</body>
+</html>

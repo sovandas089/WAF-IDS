@@ -1,0 +1,15 @@
+rules:
+  sqli:
+    - '(?i)(SELECT|UPDATE|INSERT|DELETE|DROP|UNION).*?(FROM|INTO)'
+    - '(?i)(%27)|('')|(--)|(%23)|(#)'
+    - '(?i)OR\s+1\s*=\s*1'
+  xss:
+    - '(?i)<script>.*?</script>'
+    - '(?i)onerror\s*='
+    - '(?i)onload\s*='
+    - '(?i)javascript:'
+
+thresholds:
+  brute_force:
+    max_requests: 20
+    time_window_seconds: 10
