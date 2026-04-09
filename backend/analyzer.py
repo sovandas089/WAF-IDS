@@ -85,6 +85,16 @@ async def analyze_request(ip: str, method: str, path: str, body: str) -> bool:
         if severity in ["CRITICAL", "HIGH", "MEDIUM"]:
              asyncio.create_task(send_alert_email(severity, ip, method, path, ", ".join(reasons)))
         
+        # Save to Persistent Storage
+        from backend.database import SessionLocal
+        from backend.models import AlertLog
+        def _save_alert():
+            with SessionLocal() as db:
+                alert_entry = AlertLog(src_ip=ip, method=method, path=path, severity=severity, score=score, reasons=", ".join(reasons), snippet=body[:200] if body else "")
+                db.add(alert_entry)
+                db.commit()
+        asyncio.create_task(asyncio.to_thread(_save_alert))
+
         # Dispatch Web Alert
         alert = {
             "alert_type": "payload_match" if score < 10 else "brute_force",

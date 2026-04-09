@@ -20,7 +20,7 @@ ALERT_ENABLED = True  # Change to True when you want real emails to be sent
 
 def generate_email_body(severity, ip, method, path, reasons):
     date_str = time.strftime("%Y-%m-%d %H:%M:%S")
-    body = f"""Dear Team,
+    body = f"""Dear Team 🚨,
 
 This is to inform you that a **{severity} severity security event** has been detected in the environment and requires immediate attention.
 

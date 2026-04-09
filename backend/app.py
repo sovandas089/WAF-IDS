@@ -9,6 +9,7 @@ import httpx
 from starlette.background import BackgroundTask
 # from backend.sniffer import PacketSniffer # Deprecated in Phase 1
 from backend.analyzer import alerts_queue, analyze_request
+from backend.blocker import check_expired_blocks
 
 app = FastAPI(title="WAF Dashboard API")
 # sniffer = PacketSniffer() # Deprecated
@@ -43,6 +44,7 @@ streamer = AlertStreamer()
 async def startup_event():
     # sniffer.start() # Deprecated
     asyncio.create_task(broadcast_alerts())
+    asyncio.create_task(manage_temporary_blocks())
 
 @app.on_event("shutdown")
 def shutdown_event():
@@ -54,6 +56,11 @@ async def broadcast_alerts():
         alert = await alerts_queue.get()
         await streamer.broadcast(alert)
         alerts_queue.task_done()
+
+async def manage_temporary_blocks():
+    while True:
+        check_expired_blocks()
+        await asyncio.sleep(60) # Run every 60 seconds
 
 # ================================
 # DASHBOARD ROUTES
