@@ -104,7 +104,7 @@ async def analyze_request(ip: str, method: str, path: str, body: str) -> bool:
         }
         await alerts_queue.put(alert)
 
-        # Block Threshold is 10 or more points
+        # Permanent Firewall Block at cumulative threshold >= 10
         if ip_scores[ip] >= 10 and ip not in blocked_ips:
             blocked_ips.add(ip)
             success, msg = block_ip(ip)
@@ -116,9 +116,12 @@ async def analyze_request(ip: str, method: str, path: str, body: str) -> bool:
                 "content_snippet": "Threshold exceeded."
             }
             await alerts_queue.put(block_alert)
-            return True
+
+        # BLOCK this individual request immediately (403)
+        return True
 
     return False
+
 
 def get_severity(score: int) -> str:
     if score >= 10: return "CRITICAL"
