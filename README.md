@@ -75,7 +75,7 @@ Live WebSocket-powered alerts display showing active threats, blocked IPs, and s
 ### Real-Time Alert Email
 Live Email Alerts On Suspecious Activities.
 
-![Real-Tie Mail Alert](Pics/Screenshot 2026-04-09 212122.png)
+![Real-Tie Mail Alert](Pics/Screenshot%202026-04-09%20212122.png)
 
 ### Threat Analytics Dashboard
 Comprehensive analytics view with charts, statistics, and historical threat data for SOC analysis.
